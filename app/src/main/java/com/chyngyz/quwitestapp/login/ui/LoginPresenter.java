@@ -1,7 +1,5 @@
 package com.chyngyz.quwitestapp.login.ui;
 
-import android.util.Log;
-
 import com.chyngyz.quwitestapp.common.mvp.BasePresenter;
 import com.chyngyz.quwitestapp.login.interactor.AuthInteractor;
 
@@ -19,12 +17,13 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     @Override
     public void login(String email, String password) {
         try {
-            view.showLoading(true);
+            getViewState().showLoading(true);
             interactor.login(email, password);
+            getViewState().showLoginConfirmed();
         } catch (Throwable t) {
-            Log.i("________", t.getMessage());
+            getViewState().showErrorMessage(t);
         } finally {
-            view.showLoading(false);
+            getViewState().showLoading(false);
         }
     }
 }

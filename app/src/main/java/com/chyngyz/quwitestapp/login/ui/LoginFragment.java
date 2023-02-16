@@ -1,6 +1,7 @@
 package com.chyngyz.quwitestapp.login.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.chyngyz.quwitestapp.R;
-import com.chyngyz.quwitestapp.common.mvp.BaseMvpFragment;
 import com.chyngyz.quwitestapp.databinding.FragmentLoginBinding;
+import com.chyngyz.quwitestapp.messages.ui.MessageFragment;
 
 import javax.inject.Inject;
 
@@ -24,7 +25,7 @@ public class LoginFragment extends BaseMvpFragment<LoginContract.View, LoginCont
     LoginPresenter presenter;
     private FragmentLoginBinding binding;
 
-    public static LoginFragment create(){
+    public static LoginFragment create() {
         return new LoginFragment();
     }
 
@@ -60,6 +61,7 @@ public class LoginFragment extends BaseMvpFragment<LoginContract.View, LoginCont
 
     @Override
     public void showLoading(Boolean isLoading) {
+        Log.d("__________", "____________ showLoading");
         if (isLoading) {
             binding.buttonAction.setVisibility(View.GONE);
             binding.progressBar.setVisibility(View.VISIBLE);
@@ -71,6 +73,7 @@ public class LoginFragment extends BaseMvpFragment<LoginContract.View, LoginCont
 
     @Override
     public void showLoginConfirmed() {
-        replace(new LoginFragment(), R.id.content);
+        Log.d("__________", "____________ showLoginConfirmed");
+        replace(MessageFragment.create(), R.id.content);
     }
 }

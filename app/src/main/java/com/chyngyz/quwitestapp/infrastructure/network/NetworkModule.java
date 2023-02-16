@@ -30,11 +30,14 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient() {
+    OkHttpClient provideOkHttpClient(
+            TokenInterceptor tokenInterceptor
+    ) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(tokenInterceptor)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(50, TimeUnit.SECONDS)
@@ -48,10 +51,18 @@ public class NetworkModule {
             Gson gson
     ) {
         return new Retrofit.Builder()
-                .baseUrl("https://quwi.com/")
+                .baseUrl("https://api.quwi.com/v2/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(client)
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    TokenInterceptor provideInterceptor(
+            TokenProvider tokenProvider
+    ) {
+        return new TokenInterceptor(tokenProvider);
     }
 }

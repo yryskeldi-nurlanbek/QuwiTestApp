@@ -1,23 +1,25 @@
 package com.chyngyz.quwitestapp.common.mvp;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
-public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
+import com.arellomobile.mvp.MvpPresenter;
+import com.arellomobile.mvp.MvpView;
 
-    @Nullable
-    protected V view;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
-    @CallSuper
-    @Override
-    public void attach(V view) {
-        this.view = view;
+public class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
+
+    private final CompositeDisposable compositeSubscription = new CompositeDisposable();
+
+    protected void unsubscribeOnDestroy(@NonNull Disposable disposable) {
+        compositeSubscription.add(disposable);
     }
 
-    @CallSuper
     @Override
-    public void detach() {
-        view = null;
+    public void onDestroy() {
+        super.onDestroy();
+        compositeSubscription.clear();
     }
 }
 
