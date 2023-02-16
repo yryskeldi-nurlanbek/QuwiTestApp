@@ -4,6 +4,8 @@ import com.chyngyz.quwitestapp.login.repository.AuthRepository;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+
 public class AuthInteractor {
 
     private AuthRepository repository;
@@ -13,7 +15,11 @@ public class AuthInteractor {
         this.repository = repository;
     }
 
-    public void login(String email, String password) {
-        repository.login(email, password);
+    public Single<String> login(String email, String password) {
+       return repository.login(email, password);
+    }
+
+    public Single<Object> logout() {
+        return repository.logout();
     }
 }

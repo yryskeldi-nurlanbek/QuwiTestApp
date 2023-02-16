@@ -1,5 +1,6 @@
 package com.chyngyz.quwitestapp.messages.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chyngyz.quwitestapp.R;
-import com.google.gson.annotations.SerializedName;
+import com.chyngyz.quwitestapp.messages.model.Message;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final AsyncListDiffer<Channel> differ = new AsyncListDiffer<Channel>(this, new DiffCallback());
+    private final AsyncListDiffer<Message> differ =
+            new AsyncListDiffer<Message>(this, new DiffCallback());
 
     @NonNull
     @Override
@@ -33,7 +36,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    public Channel getItem(int position) {
+    public Message getItem(int position) {
         return differ.getCurrentList().get(position);
     }
 
@@ -42,80 +45,8 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return differ.getCurrentList().size();
     }
 
-    public void submit(List<Channel> items) {
+    public void submit(List<Message> items) {
         differ.submitList(items);
-    }
-
-    public class ChannelsResponse {
-        @SerializedName("channels")
-        List<ChannelResponse> channels;
-    }
-
-    public enum ChannelType {
-        @SerializedName("pm") PM,
-        @SerializedName("custom") CUSTOM;
-    }
-
-    public class ChannelResponse {
-        @SerializedName("id")
-        private String id;
-        @SerializedName("type")
-        private ChannelType type;
-        @SerializedName("dta_created")
-        private String createdAt;
-        @SerializedName("id_partner")
-        private String partnerId;
-        @SerializedName("message_last")
-        private String lastMessage;
-    }
-
-//    public class Mapper {
-//        public List<Channel> fromNetwork(List<ChannelResponse> items) {
-//            return
-//        }
-//
-//        public static Channel fromNetwork(ChannelResponse value) {
-//            return new Channel(
-//                    value.id,
-//
-//                    );
-//        }
-//    }
-
-    public class Channel {
-        private String id;
-        private String avatarUrl;
-        private String name;
-        private String lastMessage;
-        private ChannelType type;
-
-        public Channel(String id, String avatarUrl, String name, String lastMessage, ChannelType type) {
-            this.id = id;
-            this.avatarUrl = avatarUrl;
-            this.name = name;
-            this.lastMessage = lastMessage;
-            this.type = type;
-        }
-
-        public String getId() {
-            return "";
-        }
-
-        public String getAvatarUrl() {
-            return "";
-        }
-
-        public String getChannelName() {
-            return "";
-        }
-
-        public String getLastMessage() {
-            return "";
-        }
-
-        public boolean isSelfMessage() {
-            return false;
-        }
     }
 
     private class ChannelViewHolder extends RecyclerView.ViewHolder {
@@ -135,23 +66,26 @@ public class ChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             messageTextView = itemView.findViewById(R.id.descriptionTextView);
         }
 
-        public void onBind(Channel Channel) {
-            Glide.with(itemView).load(Channel.getAvatarUrl()).into(imageView);
-            titleTextView.setText(Channel.getChannelName());
-            messageTextView.setText(Channel.getLastMessage());
-            messageTextView.setVisibility(Channel.isSelfMessage() ? View.INVISIBLE : View.VISIBLE);
+        public void onBind(Message message) {
+            String avatar = message.getUser().getAvatarUrl();
+            if (avatar != null) {
+                Glide.with(itemView).load(avatar).circleCrop().into(imageView);
+            }
+            titleTextView.setText(message.getUser().getName());
+            messageTextView.setText(message.getLastMessage());
         }
     }
 
-    private class DiffCallback extends DiffUtil.ItemCallback<Channel> {
+    private static class DiffCallback extends DiffUtil.ItemCallback<Message> {
 
         @Override
-        public boolean areItemsTheSame(@NonNull Channel oldItem, @NonNull Channel newItem) {
-            return oldItem.getId() == newItem.getId();
+        public boolean areItemsTheSame(@NonNull Message oldItem, @NonNull Message newItem) {
+            return Objects.equals(oldItem.getLastMessage(), newItem.getLastMessage());
         }
 
+        @SuppressLint("DiffUtilEquals")
         @Override
-        public boolean areContentsTheSame(@NonNull Channel oldItem, @NonNull Channel newItem) {
+        public boolean areContentsTheSame(@NonNull Message oldItem, @NonNull Message newItem) {
             return oldItem == newItem;
         }
     }

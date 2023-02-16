@@ -1,6 +1,10 @@
 package com.chyngyz.quwitestapp.login.repository;
 
+
+import io.reactivex.Single;
+
 public interface AuthRepository {
 
-    void login(String email, String password);
+    Single<String> login(String email, String password);
+    Single<Object> logout();
 }

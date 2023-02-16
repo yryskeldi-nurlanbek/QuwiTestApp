@@ -24,7 +24,6 @@ public class TokenInterceptor implements Interceptor {
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
-        String token = tokenProvider.getToken();
         Request.Builder newRequest = request.newBuilder();
 
         newRequest.addHeader("Content-Type", "application/json");

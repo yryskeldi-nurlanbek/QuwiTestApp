@@ -2,17 +2,18 @@ package com.chyngyz.quwitestapp.login.ui;
 
 import androidx.annotation.Nullable;
 
-import com.arellomobile.mvp.MvpView;
+import com.chyngyz.quwitestapp.common.mvp.MvpPresenter;
+import com.chyngyz.quwitestapp.common.mvp.MvpView;
 
 interface LoginContract {
 
     interface View extends MvpView {
-        void showLoading(Boolean isLoading);
         void showLoginConfirmed();
+
         void showErrorMessage(@Nullable Throwable throwable);
     }
 
-    interface Presenter {
+    interface Presenter extends MvpPresenter<View> {
         void login(String email, String password);
     }
 }

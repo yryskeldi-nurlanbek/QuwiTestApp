@@ -1,10 +1,9 @@
 package com.chyngyz.quwitestapp.login.di;
 
 
-import com.chyngyz.quwitestapp.infrastructure.network.TokenProvider;
 import com.chyngyz.quwitestapp.login.api.AuthApi;
-import com.chyngyz.quwitestapp.login.repository.AuthRepository;
 import com.chyngyz.quwitestapp.login.repository.AuthRemoteRepository;
+import com.chyngyz.quwitestapp.login.repository.AuthRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,8 +18,8 @@ public class AuthModule {
 
     @Provides
     @FragmentScoped
-    AuthRepository provideRepository(Retrofit retrofit, TokenProvider tokenProvider) {
+    AuthRepository provideRepository(Retrofit retrofit) {
         AuthApi api = retrofit.create(AuthApi.class);
-        return new AuthRemoteRepository(api, tokenProvider);
+        return new AuthRemoteRepository(api);
     }
 }

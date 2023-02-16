@@ -36,7 +36,7 @@ public abstract class BaseFragment extends Fragment {
     protected void replace(Fragment target, @IdRes int containerId) {
         FragmentTransaction fragmentTransaction =
                 this.requireActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(containerId, target, target.getTag());
+        fragmentTransaction.replace(containerId, target, null);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

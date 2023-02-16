@@ -38,9 +38,9 @@ public class NetworkModule {
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .addInterceptor(tokenInterceptor)
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(50, TimeUnit.SECONDS)
+                .connectTimeout(90, TimeUnit.SECONDS)
+                .readTimeout(90, TimeUnit.SECONDS)
+                .writeTimeout(90, TimeUnit.SECONDS)
                 .build();
     }
 

@@ -1,8 +1,13 @@
 package com.chyngyz.quwitestapp.messages.interactor;
 
+import com.chyngyz.quwitestapp.messages.model.Message;
 import com.chyngyz.quwitestapp.messages.repository.MessagesRepository;
 
+import java.util.List;
+
 import javax.inject.Inject;
+
+import io.reactivex.Single;
 
 public class MessagesInteractor {
 
@@ -13,7 +18,7 @@ public class MessagesInteractor {
         this.repository = repository;
     }
 
-    public void getChats() {
-        repository.getChats();
+    public Single<List<Message>> getChats() {
+        return repository.getChats();
     }
 }

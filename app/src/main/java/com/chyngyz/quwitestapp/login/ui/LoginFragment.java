@@ -1,15 +1,16 @@
 package com.chyngyz.quwitestapp.login.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.chyngyz.quwitestapp.R;
+import com.chyngyz.quwitestapp.common.mvp.BaseMvpFragment;
 import com.chyngyz.quwitestapp.databinding.FragmentLoginBinding;
 import com.chyngyz.quwitestapp.messages.ui.MessageFragment;
 
@@ -46,34 +47,25 @@ public class LoginFragment extends BaseMvpFragment<LoginContract.View, LoginCont
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         setPresenter(presenter);
         super.onViewCreated(view, savedInstanceState);
-
-        binding.buttonAction.setOnClickListener(
+        binding.actionButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String email = binding.editTextEmail.getText().toString();
-                        String password = binding.passwordTextEmail.getText().toString();
+                        String email = binding.emailEditText.getText().toString();
+                        String password = binding.passwordEditText.getText().toString();
                         presenter.login(email, password);
                     }
                 }
         );
     }
-
+    
     @Override
-    public void showLoading(Boolean isLoading) {
-        Log.d("__________", "____________ showLoading");
-        if (isLoading) {
-            binding.buttonAction.setVisibility(View.GONE);
-            binding.progressBar.setVisibility(View.VISIBLE);
-        } else {
-            binding.buttonAction.setVisibility(View.VISIBLE);
-            binding.progressBar.setVisibility(View.GONE);
-        }
+    public void showLoginConfirmed() {
+        replace(MessageFragment.create(), R.id.content);
     }
 
     @Override
-    public void showLoginConfirmed() {
-        Log.d("__________", "____________ showLoginConfirmed");
-        replace(MessageFragment.create(), R.id.content);
+    public void showErrorMessage(@Nullable Throwable throwable) {
+        Toast.makeText(requireContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

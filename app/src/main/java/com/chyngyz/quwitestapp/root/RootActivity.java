@@ -1,11 +1,11 @@
 package com.chyngyz.quwitestapp.root;
 
+import android.os.Bundle;
+
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
 
 import com.chyngyz.quwitestapp.R;
 import com.chyngyz.quwitestapp.login.ui.LoginFragment;
@@ -25,7 +25,7 @@ public class RootActivity extends AppCompatActivity {
     private void replace(Fragment target, @IdRes int containerId) {
         FragmentTransaction fragmentTransaction =
                 this.getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(containerId, target, target.getTag());
+        fragmentTransaction.replace(containerId, target, null);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

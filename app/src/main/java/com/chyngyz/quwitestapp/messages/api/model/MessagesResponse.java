@@ -1,5 +1,7 @@
 package com.chyngyz.quwitestapp.messages.api.model;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 public class MessagesResponse {
@@ -8,13 +10,15 @@ public class MessagesResponse {
     private String partnerId;
 
     @SerializedName("message_last")
-    private Message message;
+    @Nullable
+    private MessageResponse messageResponse;
 
     public String getPartnerId() {
         return partnerId;
     }
 
-    public Message getMessage() {
-        return message;
+    @Nullable
+    public MessageResponse getMessage() {
+        return messageResponse;
     }
 }
